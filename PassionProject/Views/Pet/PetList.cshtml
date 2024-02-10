@@ -1,0 +1,22 @@
+﻿@model IEnumerable<PassionProject.Models.PetDto>
+
+<h2>List of Pets</h2>
+
+@foreach (var pet in Model)
+{
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">@pet.PetName</h5>
+            <p class="card-text">@pet.PetDescription</p>
+            <a href="@Url.Action("Apply", "Pet", new { petId = pet.PetId })" class="btn btn-primary">Apply</a>
+
+            
+            <a href="@Url.Action("DeletePet", "Pet", new { petId = pet.PetId })" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+}
+
+
+<div class="mt-3">
+    <a href="@Url.Action("CreatePet", "Pet")" class="btn btn-success">Create Listing</a>
+</div>

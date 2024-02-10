@@ -1,0 +1,27 @@
+﻿@model IEnumerable<PassionProject.Models.AppDto>
+
+<h2>List of Applications for Pet ID: @ViewBag.PetDetails?.PetId</h2>
+
+<!-- Display Pet Details -->
+<h3>Pet Details</h3>
+<dl>
+    <dt>Pet ID:</dt>
+    <dd>@ViewBag.PetDetails?.PetId</dd>
+
+    <dt>Pet Name:</dt>
+    <dd>@ViewBag.PetDetails?.PetName</dd>
+
+   
+
+</dl>
+
+<!-- Display Applications -->
+<h3>Applications</h3>
+@foreach (var app in Model)
+{
+    <div>
+        <h4>Applicant ID: @app.UserId</h4>
+        <p>Application Status: @app.AppStatus</p>
+        <p>Comments: @app.AppComments</p>
+    </div>
+}

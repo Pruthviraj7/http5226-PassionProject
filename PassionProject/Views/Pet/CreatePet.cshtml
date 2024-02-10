@@ -1,0 +1,33 @@
+﻿@model PassionProject.Models.Pet
+
+<h2>Create Pet Listing</h2>
+
+@using (Html.BeginForm("CreatePet", "Pet", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.PetId)
+        @Html.TextBoxFor(model => model.PetId, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PetName)
+        @Html.TextBoxFor(model => model.PetName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PetAge)
+        @Html.TextBoxFor(model => model.PetAge, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PetSpecies)
+        @Html.TextBoxFor(model => model.PetSpecies, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PetDescription)
+        @Html.TextBoxFor(model => model.PetDescription, new { @class = "form-control" })
+    </div>
+
+
+    <!-- Add similar form fields for other properties of Pet -->
+
+    <button type="submit" class="btn btn-primary">Create</button>
+}
