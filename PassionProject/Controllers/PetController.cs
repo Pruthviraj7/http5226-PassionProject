@@ -1,7 +1,8 @@
-﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Web.Mvc;
+using PassionProject.Migrations;
 using PassionProject.Models;
 
 namespace PassionProject.Controllers
@@ -30,80 +31,34 @@ namespace PassionProject.Controllers
             }
         }
 
+
         public ActionResult Apply(int petId)
         {
-            using (HttpClient client = new HttpClient())
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                string petDetailsUrl = apiBaseUrl + $"pets/{petId}";
-                HttpResponseMessage petDetailsResponse = client.GetAsync(petDetailsUrl).Result;
-
-                if (petDetailsResponse.IsSuccessStatusCode)
-                {
-                    var petDetails = petDetailsResponse.Content.ReadAsAsync<PetDto>().Result;
-
-                    string applicationsUrl = apiBaseUrl + $"applications?petId={petId}";
-                    HttpResponseMessage applicationsResponse = client.GetAsync(applicationsUrl).Result;
-
-                    if (applicationsResponse.IsSuccessStatusCode)
+                var petDetails = db.Pets
+                    .Where(p => p.PetId == petId)
+                    .Select(p => new PetDto
                     {
-                        var applications = applicationsResponse.Content.ReadAsAsync<List<AppDto>>().Result;
-
+                        PetId = p.PetId,
+                        PetName = p.PetName,
                        
-                        ViewBag.PetDetails = petDetails;
-                        return View("~/Views/Application/ApplicationForm.cshtml", applications);
-                    }
-                }
+                    })
+                    .FirstOrDefault();
 
-                ViewBag.ErrorMessage = "Error retrieving pet details or applications.";
-                return View("Error");
-            }
-        }
-
-        public ActionResult CreatePet()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult CreatePet(Pet pet)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                string createPetUrl = apiBaseUrl + "createpet";
-                HttpResponseMessage response = client.PostAsJsonAsync(createPetUrl, pet).Result;
-
-                if (response.IsSuccessStatusCode)
+                if (petDetails != null)
                 {
-                    
-                    return RedirectToAction("List");
-                }
-                else
-                {
-                    ViewBag.ErrorMessage = "Error creating pet listing.";
-                    return View("Error");
+                    ViewBag.PetDetails = petDetails;
+
+                   
+                    return RedirectToAction("ApplicationList", "Application", new { petId });
                 }
             }
+
+            ViewBag.ErrorMessage = "Error retrieving pet details.";
+            return View("Error");
         }
 
-        [HttpPost]
-        public ActionResult DeletePet(int petId)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                string deletePetUrl = apiBaseUrl + $"deletepet/{petId}";
-                HttpResponseMessage response = client.DeleteAsync(deletePetUrl).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    
-                    return RedirectToAction("List");
-                }
-                else
-                {
-                    ViewBag.ErrorMessage = "Error deleting pet.";
-                    return View("Error");
-                }
-            }
-        }
+       
     }
 }
