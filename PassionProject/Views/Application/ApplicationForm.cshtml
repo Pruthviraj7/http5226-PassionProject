@@ -1,7 +1,3 @@
-﻿@model IEnumerable<PassionProject.Models.AppDto>
-
-<h2>Applications for Pet ID: @ViewBag.PetDetails?.PetId</h2>
-
 <!-- Display Pet Details -->
 <h3>Pet Details</h3>
 <dl>
@@ -10,14 +6,11 @@
 
     <dt>Pet Name:</dt>
     <dd>@ViewBag.PetDetails?.PetName</dd>
-
-    
-
 </dl>
 
 <!-- Display Applications -->
 <h3>Applications</h3>
-@if (Model != null && Model.Any())
+@if (Model != null && Model.Count > 0)
 {
     <div class="row">
         @foreach (var app in Model)
@@ -27,7 +20,8 @@
                     <div class="card-body">
                         <h5 class="card-title">Application ID: @app?.AppId</h5>
                         <p class="card-text">Submission Date: @app?.AppSubmission?.ToShortDateString()</p>
-                        
+                        <p class="card-text">Status: @app?.AppStatus</p>
+                        <p class="card-text">Comments: @app?.AppComments</p>
                     </div>
                 </div>
             </div>
