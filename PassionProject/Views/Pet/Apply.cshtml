@@ -1,0 +1,19 @@
+@model PassionProject.Models.Pet
+
+@{
+    ViewBag.Title = "Apply for Pet: " + Model.PetName;
+}
+
+<h2>Apply for Pet: @Model.PetName</h2>
+
+<p>Pet Details:</p>
+<dl>
+    <dt>Pet ID:</dt>
+    <dd>@Model.PetId</dd>
+
+    <dt>Pet Name:</dt>
+    <dd>@Model.PetName</dd>
+
+
+</dl>
+
